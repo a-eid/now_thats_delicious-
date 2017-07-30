@@ -1,0 +1,25 @@
+mixin storeCard(store = {})
+  .store 
+    .store__hero 
+      .store__actions
+        if user
+          .store__action.store__action--heart 
+            form.heart(action=`/api/store/${store.id}/heart` method="POST")
+              - const heartStrings = user.hearts.map(heart => heart.toString())
+              - const heartClass = heartStrings.indexOf(store._id.toString()) >= 0 ? "heart__button--hearted" : ""
+              button.heart__button(type="submit" name="heart" class=heartClass)
+                != h.icon("heart")
+        if store && store.author && user && store.author.equals(user._id) 
+          .store__action.store__action--edit 
+            a(href=`/store/${store._id}/edit`)
+              != h.icon('pencil')
+        if store.reviews
+          .store__action.store__action--count
+            != h.icon("review")
+            span= store.reviews.length
+      img(src=`/uploads/${store.photo || "store.png"}`)
+      h2.title
+        a(href=`/store/${store.slug}`)= store.name.split(" ").length > 3 ? store.name.split(" ").slice(0 , 3).concat([". . ."]).join(" ") : store.name
+    .store__details
+      p= store.description.split(" ").length > 15 ? store.description.split(" ").slice(0 , 15).concat(['...']).join(" ") : store.description 
+

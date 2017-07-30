@@ -1,0 +1,16 @@
+.map {
+  padding: 5px;
+  background: white;
+  box-shadow: $shad;
+}
+#map {
+  height: 450px;
+  margin-bottom: 50px;
+}
+
+.popup {
+  width: 300px;
+  img {
+    width: 100%;
+  }
+}

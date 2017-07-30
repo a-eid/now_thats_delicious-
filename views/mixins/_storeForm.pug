@@ -1,0 +1,31 @@
+mixin storeForm(store={})
+  //-   /add/ /add/id 
+    <input type="hidden"  value="DELETE">
+  form.card(action=`/add/${ store._id ||""}` method="POST" enctype="multipart/form-data") 
+    if(store.tags)
+      input(type="hidden" name="_method" value="PUT")
+    label(for="name") Name 
+    input(type="text" name="name" id="name" value=store.name)
+    label(for="description") Description
+    textarea(name="description" id="description")= store.description 
+    label(for="photo") Photo
+      input(type="file" id="photo" name="photo" accept="image/*")
+      if store.photo
+        img(src=`/uploads/${store.photo}` alt=store.name width=200)  
+    //- address lng lat 
+    label(for="address") Address
+    input(type="text" id="address" name="location[address]" value=store.location && store.location.address )
+    label(for="lng") Address Lng 
+    input(type="text" id="lng" name="location[coordinates][0]" 
+      value=(store.location && store.location.coordinates && store.location.coordinates[0]))
+    label(for="lat") Address Lnt
+    input(type="text" id="lat" name="location[coordinates][1]" 
+      value=(store.location && store.location.coordinates && store.location.coordinates[1]))
+    - const tags = ['Wifi' , 'Open Late' , 'Family Friendly' , 'Vegatarian' , 'Licensed']
+    ul.tags
+      each tag in tags 
+        - var checked = store.tags && store.tags.includes(tag) 
+        .tag.tag__choice
+          input(type="checkbox" id=tag value=tag name="tags" checked=checked)
+          label(for=tag)=tag
+    input.button(type="submit" value="save")
